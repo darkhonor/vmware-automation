@@ -1,16 +1,22 @@
 #
 # Simple script to renew the Machine SSL certificate using the embedded VMCA certificate
-# Author: Alex Ackerman
-# Last Update: 10 Sept 2022
 #
-
+# Author: Alex Ackerman
+# Last Update: 14 Sept 2022
+#
+[CmdletBinding()]
+Param (
+    # vCenter Server name is mandatory
+    [Parameter(Mandatory=$true)]
+    [string] $VIServer,
+    # Certificate duration will default to the standard 2 years if not provided
+    [int] $duration = 730
+)
 Import-Module VMware.VimAutomation.Core
 Import-Module VMware.Sdk.vSphere.vCenter.CertManagement
 
 # Script Variables
-$VIServer = "vcenter.domain.local"
 $creds = Get-Credential -Message "Enter login for user with Certificate Management Role"
-$duration = 730 # Default value: 2 years
 
 # Login to the vCenter Server
 Connect-VIServer -Server $VIServer  -Credential $creds
